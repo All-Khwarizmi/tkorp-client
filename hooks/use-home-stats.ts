@@ -1,6 +1,6 @@
-import { useAnimalService, usePersonService } from "@/src/core/store/app.store";
-import { AnimalSpeciesCount } from "@/src/core/entities/types";
-import { useCallback, useEffect, useState } from "react";
+import { useAnimalService, usePersonService } from '@/src/core/store/app.store';
+import { AnimalSpeciesCount } from '@/src/core/entities/types';
+import { useCallback, useEffect, useState } from 'react';
 
 interface HomeStats {
   totalAnimals: number;
@@ -42,7 +42,10 @@ export function useHomeStats() {
       ]);
 
       setStats({
-        totalAnimals: mostCommonSpecies.reduce((acc: number, curr: AnimalSpeciesCount) => acc + curr.count, 0),
+        totalAnimals: mostCommonSpecies.reduce(
+          (acc: number, curr: AnimalSpeciesCount) => acc + curr.count,
+          0
+        ),
         totalOwners: 0, // À implémenter avec le service approprié
         oldestAnimal: {
           name: oldestAnimal.name,
@@ -62,7 +65,7 @@ export function useHomeStats() {
         },
       });
     } catch (err) {
-      setError(err instanceof Error ? err : new Error("Failed to fetch stats"));
+      setError(err instanceof Error ? err : new Error('Failed to fetch stats'));
     } finally {
       setLoading(false);
     }

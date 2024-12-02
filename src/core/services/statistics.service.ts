@@ -1,9 +1,6 @@
-import { AnimalService } from "./animal.service";
-import { PersonService } from "./person.service";
-import type {
-  AnimalSpeciesCount,
-  Animal,
-} from "../entities/types";
+import { AnimalService } from './animal.service';
+import { PersonService } from './person.service';
+import type { AnimalSpeciesCount, Animal } from '../entities/types';
 
 export class StatisticsService {
   constructor(
@@ -12,19 +9,14 @@ export class StatisticsService {
   ) {}
 
   async getGlobalStatistics() {
-    const [
-      mostCommonSpecies,
-      heaviestAnimal,
-      oldestAnimal,
-      topOwner,
-      ownerWithHeaviestPets,
-    ] = await Promise.all([
-      this.animalService.getMostCommonSpecies(),
-      this.animalService.getHeaviestAnimal(),
-      this.animalService.getOldestAnimal(),
-      this.personService.getTopOwner(),
-      this.personService.getOwnerWithHeaviestPets(),
-    ]);
+    const [mostCommonSpecies, heaviestAnimal, oldestAnimal, topOwner, ownerWithHeaviestPets] =
+      await Promise.all([
+        this.animalService.getMostCommonSpecies(),
+        this.animalService.getHeaviestAnimal(),
+        this.animalService.getOldestAnimal(),
+        this.personService.getTopOwner(),
+        this.personService.getOwnerWithHeaviestPets(),
+      ]);
 
     return {
       speciesDistribution: mostCommonSpecies,
@@ -46,9 +38,7 @@ export class StatisticsService {
         heaviestGroup: {
           ...ownerWithHeaviestPets,
           ownerName: this.personService.getFullName(ownerWithHeaviestPets.owner),
-          formattedTotalWeight: this.animalService.formatWeight(
-            ownerWithHeaviestPets.totalWeight
-          ),
+          formattedTotalWeight: this.animalService.formatWeight(ownerWithHeaviestPets.totalWeight),
         },
       },
     };

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PawPrintIcon as Paw, Users, Scale, Calendar } from "lucide-react";
-import { useQuery } from "@apollo/client";
-import { ANIMALS_QUERY, PERSONS_QUERY } from "@/src/infrastructure/graphql/queries";
-import { LoadingSkeleton } from "./loading-skeleton";
-import type { Animal, Person } from "@/src/core/entities/types";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PawPrintIcon as Paw, Users, Scale, Calendar } from 'lucide-react';
+import { useQuery } from '@apollo/client';
+import { ANIMALS_QUERY, PERSONS_QUERY } from '@/src/infrastructure/graphql/queries';
+import { LoadingSkeleton } from './loading-skeleton';
+import type { Animal, Person } from '@/src/core/entities/types';
 
 interface AnimalData {
   items: Animal[];
@@ -24,11 +24,11 @@ function calculateAge(dateOfBirth: string): number {
   const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
-  
+
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
-  
+
   return age;
 }
 
@@ -45,8 +45,8 @@ export default function OverviewStats() {
     {
       variables: {
         page: 1,
-        take: 1000 // Increased to get better average calculations
-      }
+        take: 1000, // Increased to get better average calculations
+      },
     }
   );
 
@@ -55,8 +55,8 @@ export default function OverviewStats() {
     {
       variables: {
         page: 1,
-        take: 100
-      }
+        take: 100,
+      },
     }
   );
 
@@ -85,17 +85,17 @@ export default function OverviewStats() {
       icon: Paw,
     },
     {
-      title: "Nombre total de propriétaires",
+      title: 'Nombre total de propriétaires',
       value: formatNumber(totalPersons),
       icon: Users,
     },
     {
-      title: "Poids moyen des animaux",
+      title: 'Poids moyen des animaux',
       value: `${formatNumber(Math.round(averageWeight * 10) / 10)} kg`,
       icon: Scale,
     },
     {
-      title: "Âge moyen des animaux",
+      title: 'Âge moyen des animaux',
       value: `${formatNumber(Math.round(averageAge * 10) / 10)} ans`,
       icon: Calendar,
     },

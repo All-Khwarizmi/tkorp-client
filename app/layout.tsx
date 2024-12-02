@@ -1,21 +1,17 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { AppProvider } from "../src/core/providers/app.provider";
-import { Navigation } from "../components/layout/navigation";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { AppProvider } from '../src/core/providers/app.provider';
+import { Navigation } from '../components/layout/navigation';
+import './globals.css';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Pet Management",
+  title: 'Pet Management',
   description: "Système de gestion d'animaux de compagnie",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className={inter.className}>

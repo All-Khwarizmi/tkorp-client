@@ -1,15 +1,11 @@
-import { apolloClient } from "../graphql/apollo-client";
-import {
-  ANIMALS_QUERY,
-  ANIMAL_QUERY,
-  STATISTICS_QUERIES,
-} from "../graphql/queries";
+import { apolloClient } from '../graphql/apollo-client';
+import { ANIMALS_QUERY, ANIMAL_QUERY, STATISTICS_QUERIES } from '../graphql/queries';
 import type {
   Animal,
   PaginatedAnimalResponse,
   AnimalSpeciesCount,
   OrderByInput,
-} from "../../core/entities/types";
+} from '../../core/entities/types';
 
 export class AnimalRepository {
   async getAnimals(

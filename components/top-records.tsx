@@ -1,19 +1,19 @@
-'use client'
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
-import { useStatistics } from "../hooks/use-statistics"
-import { LoadingSkeleton } from "./loading-skeleton"
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { useStatistics } from '../hooks/use-statistics';
+import { LoadingSkeleton } from './loading-skeleton';
 
 function calculateAge(dateOfBirth: string): number {
   const birthDate = new Date(dateOfBirth);
   const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
-  
+
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
-  
+
   return age;
 }
 
@@ -25,13 +25,8 @@ const formatNumber = (num: number): string => {
 };
 
 export default function TopRecords() {
-  const { 
-    heaviestAnimal, 
-    oldestAnimal, 
-    topOwner, 
-    ownerWithHeaviestPets,
-    isLoading 
-  } = useStatistics();
+  const { heaviestAnimal, oldestAnimal, topOwner, ownerWithHeaviestPets, isLoading } =
+    useStatistics();
 
   if (isLoading) {
     return <LoadingSkeleton />;
@@ -88,7 +83,7 @@ export default function TopRecords() {
                 {topOwner.owner.firstName} {topOwner.owner.lastName}
               </p>
               <p>Email: {topOwner.owner.email}</p>
-              <p>Nombre d'animaux: {formatNumber(topOwner.animalCount)}</p>
+              <p>Nombre d&apos;animaux: {formatNumber(topOwner.animalCount)}</p>
             </div>
           </CardContent>
         </Card>
@@ -105,12 +100,12 @@ export default function TopRecords() {
                 {ownerWithHeaviestPets.owner.firstName} {ownerWithHeaviestPets.owner.lastName}
               </p>
               <p>Email: {ownerWithHeaviestPets.owner.email}</p>
-              <p>Nombre d'animaux: {formatNumber(ownerWithHeaviestPets.animalCount)}</p>
+              <p>Nombre d&apos;animaux: {formatNumber(ownerWithHeaviestPets.animalCount)}</p>
               <p>Poids total: {formatNumber(gramsToKg(ownerWithHeaviestPets.totalWeight))} kg</p>
             </div>
           </CardContent>
         </Card>
       )}
     </div>
-  )
+  );
 }

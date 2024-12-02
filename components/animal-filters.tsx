@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 export interface AnimalFilters {
   search?: string;
@@ -24,11 +24,11 @@ interface AnimalFiltersProps {
 }
 
 export default function AnimalFilters({ onFilterChange }: AnimalFiltersProps) {
-  const [search, setSearch] = useState("");
-  const [species, setSpecies] = useState("");
-  const [ageRange, setAgeRange] = useState("");
-  const [weightRange, setWeightRange] = useState("");
-  const [sort, setSort] = useState("");
+  const [search, setSearch] = useState('');
+  const [species, setSpecies] = useState('');
+  const [ageRange, setAgeRange] = useState('');
+  const [weightRange, setWeightRange] = useState('');
+  const [sort, setSort] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,11 +42,11 @@ export default function AnimalFilters({ onFilterChange }: AnimalFiltersProps) {
   };
 
   const handleReset = () => {
-    setSearch("");
-    setSpecies("");
-    setAgeRange("");
-    setWeightRange("");
-    setSort("");
+    setSearch('');
+    setSpecies('');
+    setAgeRange('');
+    setWeightRange('');
+    setSort('');
     onFilterChange({});
   };
 

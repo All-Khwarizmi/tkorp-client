@@ -1,6 +1,6 @@
-import { FileQuestion } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { FileQuestion } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface EmptyStateProps {
   message: string;
@@ -8,11 +8,7 @@ interface EmptyStateProps {
   onAction?: () => void;
 }
 
-export function EmptyState({
-  message,
-  actionLabel,
-  onAction,
-}: EmptyStateProps) {
+export function EmptyState({ message, actionLabel, onAction }: EmptyStateProps) {
   return (
     <Card className="text-center p-6">
       <CardContent>

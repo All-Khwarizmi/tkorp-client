@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Suspense } from "react";
-import { PawPrint, Weight, Crown, Users } from "lucide-react";
-import { StatCard } from "@/components/stats/stat-card";
-import { useHomeStats } from "@/hooks/use-home-stats";
+import { Suspense } from 'react';
+import { PawPrint, Weight, Crown, Users } from 'lucide-react';
+import { StatCard } from '@/components/stats/stat-card';
+import { useHomeStats } from '@/hooks/use-home-stats';
 
 export default function HomePage() {
   const { stats, loading } = useHomeStats();
@@ -25,8 +25,7 @@ export default function HomePage() {
             Gestion d&apos;Animaux de Compagnie
           </h1>
           <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-            Gérez {stats.totalAnimals} animaux et {stats.totalOwners}{" "}
-            propriétaires avec facilité.
+            Gérez {stats.totalAnimals} animaux et {stats.totalOwners} propriétaires avec facilité.
           </p>
         </div>
       </section>
@@ -62,9 +61,7 @@ export default function HomePage() {
 
         {/* Recent Additions Section */}
         <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-            Derniers Ajouts
-          </h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Derniers Ajouts</h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {/* À implémenter avec les données réelles */}
             <div className="p-6 bg-white rounded-lg shadow">

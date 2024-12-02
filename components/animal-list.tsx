@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Card, CardContent } from "@/components/ui/card";
-import { useQuery } from "@apollo/client";
-import { ANIMALS_QUERY } from "@/src/infrastructure/graphql/queries";
-import { LoadingSkeleton } from "./loading-skeleton";
-import type { AnimalFilters } from "./animal-filters";
-import type { Animal } from "@/src/core/entities/types";
+import { Card, CardContent } from '@/components/ui/card';
+import { useQuery } from '@apollo/client';
+import { ANIMALS_QUERY } from '@/src/infrastructure/graphql/queries';
+import { LoadingSkeleton } from './loading-skeleton';
+import type { AnimalFilters } from './animal-filters';
+import type { Animal } from '@/src/core/entities/types';
 
 interface AnimalListProps {
   filters: AnimalFilters;
@@ -20,13 +20,13 @@ interface AnimalsData {
 }
 
 const speciesTranslations: Record<string, string> = {
-  Dog: "Chien",
-  Cat: "Chat",
-  Bird: "Oiseau",
-  Rabbit: "Lapin",
-  Hamster: "Hamster",
-  Turtle: "Tortue",
-  Fish: "Poisson",
+  Dog: 'Chien',
+  Cat: 'Chat',
+  Bird: 'Oiseau',
+  Rabbit: 'Lapin',
+  Hamster: 'Hamster',
+  Turtle: 'Tortue',
+  Fish: 'Poisson',
 };
 
 function calculateAge(dateOfBirth: string): number {
@@ -34,20 +34,20 @@ function calculateAge(dateOfBirth: string): number {
   const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
-  
+
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
-  
+
   return age;
 }
 
 const gramsToKg = (grams: number): number => grams / 1000;
 
 const formatWeight = (grams: number): string => {
-  return gramsToKg(grams).toLocaleString("fr-FR", {
+  return gramsToKg(grams).toLocaleString('fr-FR', {
     minimumFractionDigits: 1,
-    maximumFractionDigits: 1
+    maximumFractionDigits: 1,
   });
 };
 
@@ -60,10 +60,10 @@ export default function AnimalList({ filters }: AnimalListProps) {
       ...(filters.sort && {
         orderBy: {
           field: filters.sort.split('_')[0],
-          direction: filters.sort.split('_')[1].toUpperCase()
-        }
-      })
-    }
+          direction: filters.sort.split('_')[1].toUpperCase(),
+        },
+      }),
+    },
   });
 
   if (loading) return <LoadingSkeleton />;
@@ -71,7 +71,7 @@ export default function AnimalList({ filters }: AnimalListProps) {
   if (!data?.animals.items.length) return <div>Aucun animal trouvé.</div>;
 
   // Filter animals based on species, age range, and weight range
-  const filteredAnimals = data.animals.items.filter(animal => {
+  const filteredAnimals = data.animals.items.filter((animal) => {
     let matches = true;
 
     if (filters.species) {
@@ -111,16 +111,14 @@ export default function AnimalList({ filters }: AnimalListProps) {
         >
           <CardContent className="p-6">
             <div className="flex items-center mb-4">
-              <div 
+              <div
                 className="w-16 h-16 rounded-full mr-4 flex items-center justify-center"
-                style={{ 
+                style={{
                   backgroundColor: animal.color ? `#${animal.color}20` : '#f3f4f6',
-                  color: animal.color ? `#${animal.color}` : '#6b7280'
+                  color: animal.color ? `#${animal.color}` : '#6b7280',
                 }}
               >
-                <span className="text-2xl font-bold">
-                  {animal.name.charAt(0)}
-                </span>
+                <span className="text-2xl font-bold">{animal.name.charAt(0)}</span>
               </div>
               <div>
                 <h3 className="font-semibold text-lg">{animal.name}</h3>
@@ -136,7 +134,7 @@ export default function AnimalList({ filters }: AnimalListProps) {
               {animal.color && (
                 <div className="flex items-center gap-2">
                   <span>Couleur:</span>
-                  <div 
+                  <div
                     className="w-4 h-4 rounded-full border border-gray-200"
                     style={{ backgroundColor: `#${animal.color}` }}
                     title={`#${animal.color}`}

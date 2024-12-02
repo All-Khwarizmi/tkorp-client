@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Mail, Phone } from "lucide-react";
-import { useQuery } from "@apollo/client";
-import { PERSONS_QUERY } from "@/src/infrastructure/graphql/queries";
-import { LoadingSkeleton } from "./loading-skeleton";
-import type { PersonFilters } from "./person-filters";
-import type { Person } from "@/src/core/entities/types";
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Mail, Phone } from 'lucide-react';
+import { useQuery } from '@apollo/client';
+import { PERSONS_QUERY } from '@/src/infrastructure/graphql/queries';
+import { LoadingSkeleton } from './loading-skeleton';
+import type { PersonFilters } from './person-filters';
+import type { Person } from '@/src/core/entities/types';
 
 interface PersonListProps {
   filters: PersonFilters;
@@ -22,13 +22,13 @@ interface PersonsData {
 }
 
 const speciesTranslations: Record<string, string> = {
-  Dog: "Chien",
-  Cat: "Chat",
-  Bird: "Oiseau",
-  Rabbit: "Lapin",
-  Hamster: "Hamster",
-  Turtle: "Tortue",
-  Fish: "Poisson",
+  Dog: 'Chien',
+  Cat: 'Chat',
+  Bird: 'Oiseau',
+  Rabbit: 'Lapin',
+  Hamster: 'Hamster',
+  Turtle: 'Tortue',
+  Fish: 'Poisson',
 };
 
 const gramsToKg = (grams: number): number => grams / 1000;
@@ -42,8 +42,7 @@ const PersonList = ({ filters }: PersonListProps) => {
   });
 
   if (loading) return <LoadingSkeleton />;
-  if (error)
-    return <div>Une erreur est survenue lors du chargement des données.</div>;
+  if (error) return <div>Une erreur est survenue lors du chargement des données.</div>;
   if (!data?.persons.items.length) return <div>Aucun propriétaire trouvé.</div>;
 
   const filteredPersons = data.persons.items.filter((person) => {
@@ -61,16 +60,16 @@ const PersonList = ({ filters }: PersonListProps) => {
     if (filters.animalCount) {
       const count = person.animals.length;
       switch (filters.animalCount) {
-        case "1":
+        case '1':
           matches = matches && count === 1;
           break;
-        case "2-3":
+        case '2-3':
           matches = matches && count >= 2 && count <= 3;
           break;
-        case "4-5":
+        case '4-5':
           matches = matches && count >= 4 && count <= 5;
           break;
-        case "6+":
+        case '6+':
           matches = matches && count >= 6;
           break;
       }
@@ -80,8 +79,7 @@ const PersonList = ({ filters }: PersonListProps) => {
       matches =
         matches &&
         person.animals.some(
-          (animal) =>
-            animal.species.toLowerCase() === filters.animalType?.toLowerCase()
+          (animal) => animal.species.toLowerCase() === filters.animalType?.toLowerCase()
         );
     }
 
@@ -89,17 +87,15 @@ const PersonList = ({ filters }: PersonListProps) => {
   });
 
   if (filters.sort) {
-    const [field, direction] = filters.sort.split("_");
+    const [field, direction] = filters.sort.split('_');
     filteredPersons.sort((a, b) => {
       let comparison = 0;
-      if (field === "name") {
-        comparison = `${a.firstName} ${a.lastName}`.localeCompare(
-          `${b.firstName} ${b.lastName}`
-        );
-      } else if (field === "animals") {
+      if (field === 'name') {
+        comparison = `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
+      } else if (field === 'animals') {
         comparison = a.animals.length - b.animals.length;
       }
-      return direction === "asc" ? comparison : -comparison;
+      return direction === 'asc' ? comparison : -comparison;
     });
   }
 
@@ -121,9 +117,7 @@ const PersonList = ({ filters }: PersonListProps) => {
                 <h3 className="font-semibold text-lg">
                   {person.firstName} {person.lastName}
                 </h3>
-                <p className="text-sm text-gray-600">
-                  {person.animals.length} animaux
-                </p>
+                <p className="text-sm text-gray-600">{person.animals.length} animaux</p>
               </div>
             </div>
             {person.animals.length > 0 && (
@@ -135,27 +129,20 @@ const PersonList = ({ filters }: PersonListProps) => {
                       <div
                         className="w-10 h-10 rounded-full flex items-center justify-center"
                         style={{
-                          backgroundColor: animal.color
-                            ? `#${animal.color}20`
-                            : "#f3f4f6",
-                          color: animal.color ? `#${animal.color}` : "#6b7280",
+                          backgroundColor: animal.color ? `#${animal.color}20` : '#f3f4f6',
+                          color: animal.color ? `#${animal.color}` : '#6b7280',
                         }}
                       >
-                        <span className="text-xs font-medium">
-                          {animal.name.charAt(0)}
-                        </span>
+                        <span className="text-xs font-medium">{animal.name.charAt(0)}</span>
                       </div>
                       <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
                         <p>{animal.name}</p>
+                        <p>{speciesTranslations[animal.species] || animal.species}</p>
                         <p>
-                          {speciesTranslations[animal.species] ||
-                            animal.species}
-                        </p>
-                        <p>
-                          {gramsToKg(animal.weight).toLocaleString("fr-FR", {
+                          {gramsToKg(animal.weight).toLocaleString('fr-FR', {
                             minimumFractionDigits: 1,
                             maximumFractionDigits: 1,
-                          })}{" "}
+                          })}{' '}
                           kg
                         </p>
                       </div>

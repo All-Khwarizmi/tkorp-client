@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 export interface PersonFilters {
   search?: string;
@@ -23,10 +23,10 @@ interface PersonFiltersProps {
 }
 
 export default function PersonFilters({ onFilterChange }: PersonFiltersProps) {
-  const [search, setSearch] = useState("");
-  const [animalCount, setAnimalCount] = useState("");
-  const [animalType, setAnimalType] = useState("");
-  const [sort, setSort] = useState("");
+  const [search, setSearch] = useState('');
+  const [animalCount, setAnimalCount] = useState('');
+  const [animalType, setAnimalType] = useState('');
+  const [sort, setSort] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,15 +34,15 @@ export default function PersonFilters({ onFilterChange }: PersonFiltersProps) {
       search: search.trim(),
       animalCount: animalCount || undefined,
       animalType: animalType || undefined,
-      sort: sort || undefined
+      sort: sort || undefined,
     });
   };
 
   const handleReset = () => {
-    setSearch("");
-    setAnimalCount("");
-    setAnimalType("");
-    setSort("");
+    setSearch('');
+    setAnimalCount('');
+    setAnimalType('');
+    setSort('');
     onFilterChange({});
   };
 
@@ -86,18 +86,18 @@ export default function PersonFilters({ onFilterChange }: PersonFiltersProps) {
           <SelectContent>
             <SelectItem value="name_asc">Nom (A-Z)</SelectItem>
             <SelectItem value="name_desc">Nom (Z-A)</SelectItem>
-            <SelectItem value="animals_asc">
-              Nombre d'animaux (Croissant)
-            </SelectItem>
-            <SelectItem value="animals_desc">
-              Nombre d'animaux (Décroissant)
-            </SelectItem>
+            <SelectItem value="animals_asc">Nombre d&apos;animaux (Croissant)</SelectItem>
+            <SelectItem value="animals_desc">Nombre d&apos;animaux (Décroissant)</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <div className="flex gap-4">
-        <Button type="submit" variant="default">Appliquer les filtres</Button>
-        <Button type="button" variant="outline" onClick={handleReset}>Réinitialiser</Button>
+        <Button type="submit" variant="default">
+          Appliquer les filtres
+        </Button>
+        <Button type="button" variant="outline" onClick={handleReset}>
+          Réinitialiser
+        </Button>
       </div>
     </form>
   );

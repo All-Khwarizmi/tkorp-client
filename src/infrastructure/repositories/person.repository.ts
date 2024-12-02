@@ -1,11 +1,11 @@
-import { apolloClient } from "../graphql/apollo-client";
-import { PERSONS_QUERY, PERSON_QUERY, STATISTICS_QUERIES } from "../graphql/queries";
+import { apolloClient } from '../graphql/apollo-client';
+import { PERSONS_QUERY, PERSON_QUERY, STATISTICS_QUERIES } from '../graphql/queries';
 import type {
   Person,
   PaginatedPersonResponse,
   OwnershipStats,
   OwnerWeightStats,
-} from "../../core/entities/types";
+} from '../../core/entities/types';
 
 export class PersonRepository {
   async getPersons(page: number, take: number): Promise<PaginatedPersonResponse> {

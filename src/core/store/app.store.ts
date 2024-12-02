@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { Services, createServices } from "../services";
+import { create } from 'zustand';
+import { Services, createServices } from '../services';
 
 interface AppState {
   services: Services;

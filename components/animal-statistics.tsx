@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 // This should be replaced with actual data fetching logic
 const data = [
@@ -15,7 +15,7 @@ const data = [
   },
 ];
 
-export default function AnimalStatistics({ animalId }: { animalId: string }) {
+export default function AnimalStatistics() {
   return (
     <Card>
       <CardHeader>

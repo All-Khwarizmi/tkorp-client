@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { useQuery } from "@apollo/client";
-import { ANIMALS_QUERY } from "../src/infrastructure/graphql/queries";
-import { LoadingSkeleton } from "./loading-skeleton";
-import type { Animal } from "../src/core/entities/types";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useQuery } from '@apollo/client';
+import { ANIMALS_QUERY } from '../src/infrastructure/graphql/queries';
+import { LoadingSkeleton } from './loading-skeleton';
+import type { Animal } from '../src/core/entities/types';
 
 interface AnimalData {
   items: Animal[];
@@ -22,11 +22,11 @@ function calculateAge(dateOfBirth: string): number {
   const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
-  
+
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
-  
+
   return age;
 }
 
@@ -43,8 +43,8 @@ export default function AgeDistribution() {
     variables: {
       page: 1,
       take: 100,
-      orderBy: { field: "dateOfBirth", direction: "ASC" }
-    }
+      orderBy: { field: 'dateOfBirth', direction: 'ASC' },
+    },
   });
 
   if (loading) {
@@ -53,8 +53,8 @@ export default function AgeDistribution() {
 
   // Calculate age distribution
   const ageGroups = new Map<string, number>();
-  
-  data?.animals.items.forEach(animal => {
+
+  data?.animals.items.forEach((animal) => {
     const age = calculateAge(animal.dateOfBirth);
     const group = getAgeGroup(age);
     ageGroups.set(group, (ageGroups.get(group) || 0) + 1);
@@ -73,23 +73,14 @@ export default function AgeDistribution() {
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={chartData}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis 
-          dataKey="age" 
-          label={{ value: "Âge (années)", position: "bottom" }}
-        />
-        <YAxis 
-          label={{ value: "Nombre d'animaux", angle: -90, position: "insideLeft" }}
-        />
-        <Tooltip 
+        <XAxis dataKey="age" label={{ value: 'Âge (années)', position: 'bottom' }} />
+        <YAxis label={{ value: "Nombre d'animaux", angle: -90, position: 'insideLeft' }} />
+        <Tooltip
           formatter={(value: number) => [`${value} animaux`, 'Nombre']}
           labelFormatter={(label: string) => `Âge: ${label} ans`}
         />
-        <Bar 
-          dataKey="count" 
-          fill="#8884d8"
-          name="Nombre d'animaux"
-        />
+        <Bar dataKey="count" fill="#8884d8" name="Nombre d'animaux" />
       </BarChart>
     </ResponsiveContainer>
-  )
+  );
 }

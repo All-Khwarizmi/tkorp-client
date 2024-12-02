@@ -1,11 +1,11 @@
-import { Suspense } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import TopRecords from "@/components/top-records";
-import SpeciesDistribution from "@/components/species-distribution";
-import AgeDistribution from "@/components/age-distribution";
-import WeightDistribution from "@/components/weight-distribution";
-import OverviewStats from "@/components/overview-stats";
+import { Suspense } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import TopRecords from '@/components/top-records';
+import SpeciesDistribution from '@/components/species-distribution';
+import AgeDistribution from '@/components/age-distribution';
+import WeightDistribution from '@/components/weight-distribution';
+import OverviewStats from '@/components/overview-stats';
 
 export default function StatisticsPage() {
   return (

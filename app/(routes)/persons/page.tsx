@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Suspense, useState } from "react";
-import PersonFilters from "@/components/person-filters";
-import { Skeleton } from "@/components/ui/skeleton";
-import PersonList from "@/components/person-list";
-import type { PersonFilters as PersonFiltersType } from "@/components/person-filters";
+import { Suspense, useState } from 'react';
+import PersonFilters from '@/components/person-filters';
+import { Skeleton } from '@/components/ui/skeleton';
+import PersonList from '@/components/person-list';
+import type { PersonFilters as PersonFiltersType } from '@/components/person-filters';
 
 export default function PersonsPage() {
   const [filters, setFilters] = useState<PersonFiltersType>({});

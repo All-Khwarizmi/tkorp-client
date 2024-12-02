@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Suspense, useState } from "react";
-import AnimalFilters from "@/components/animal-filters";
-import { Skeleton } from "@/components/ui/skeleton";
-import AnimalList from "@/components/animal-list";
-import type { AnimalFilters as AnimalFiltersType } from "@/components/animal-filters";
+import { Suspense, useState } from 'react';
+import AnimalFilters from '@/components/animal-filters';
+import { Skeleton } from '@/components/ui/skeleton';
+import AnimalList from '@/components/animal-list';
+import type { AnimalFilters as AnimalFiltersType } from '@/components/animal-filters';
 
 export default function AnimalsPage() {
   const [filters, setFilters] = useState<AnimalFiltersType>({});

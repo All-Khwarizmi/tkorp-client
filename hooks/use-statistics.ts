@@ -1,10 +1,10 @@
 import { useQuery } from '@apollo/client';
 import { STATISTICS_QUERIES } from '../src/infrastructure/graphql/queries';
-import type { 
-  AnimalSpeciesCount, 
-  OwnershipStats, 
+import type {
+  AnimalSpeciesCount,
+  OwnershipStats,
   Animal,
-  OwnerWeightStats 
+  OwnerWeightStats,
 } from '../src/core/entities/types';
 
 interface StatisticsData {
@@ -36,11 +36,11 @@ export function useStatistics() {
     ownerWithHeaviestPets: OwnerWeightStats;
   }>(STATISTICS_QUERIES.OWNER_WITH_HEAVIEST_PETS);
 
-  const isLoading = 
-    speciesLoading || 
-    topOwnerLoading || 
-    heaviestAnimalLoading || 
-    oldestAnimalLoading || 
+  const isLoading =
+    speciesLoading ||
+    topOwnerLoading ||
+    heaviestAnimalLoading ||
+    oldestAnimalLoading ||
     heaviestPetsOwnerLoading;
 
   return {
@@ -49,6 +49,6 @@ export function useStatistics() {
     heaviestAnimal: heaviestAnimalData?.heaviestAnimal,
     oldestAnimal: oldestAnimalData?.oldestAnimal,
     ownerWithHeaviestPets: heaviestPetsOwnerData?.ownerWithHeaviestPets,
-    isLoading
+    isLoading,
   };
 }

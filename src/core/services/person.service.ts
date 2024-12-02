@@ -1,18 +1,15 @@
-import { PersonRepository } from "../../infrastructure/repositories/person.repository";
+import { PersonRepository } from '../../infrastructure/repositories/person.repository';
 import type {
   Person,
   PaginatedPersonResponse,
   OwnershipStats,
   OwnerWeightStats,
-} from "../entities/types";
+} from '../entities/types';
 
 export class PersonService {
   constructor(private readonly personRepository: PersonRepository) {}
 
-  async getPersons(
-    page: number = 1,
-    take: number = 10
-  ): Promise<PaginatedPersonResponse> {
+  async getPersons(page: number = 1, take: number = 10): Promise<PaginatedPersonResponse> {
     return this.personRepository.getPersons(page, take);
   }
 
@@ -38,7 +35,7 @@ export class PersonService {
 
   formatPhoneNumber(phoneNumber: string): string {
     // Format: XX XX XX XX XX
-    return phoneNumber.replace(/(\d{2})(?=\d)/g, "$1 ").trim();
+    return phoneNumber.replace(/(\d{2})(?=\d)/g, '$1 ').trim();
   }
 
   getAnimalCount(person: Person): number {

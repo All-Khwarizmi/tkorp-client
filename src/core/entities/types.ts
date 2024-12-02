@@ -43,8 +43,8 @@ export interface OwnerWeightStats {
 }
 
 export interface OrderByInput {
-  field: "name" | "dateOfBirth" | "species" | "breed" | "weight";
-  direction: "ASC" | "DESC";
+  field: 'name' | 'dateOfBirth' | 'species' | 'breed' | 'weight';
+  direction: 'ASC' | 'DESC';
 }
 
 // Apollo Client type policies

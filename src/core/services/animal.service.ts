@@ -1,10 +1,10 @@
-import { AnimalRepository } from "../../infrastructure/repositories/animal.repository";
+import { AnimalRepository } from '../../infrastructure/repositories/animal.repository';
 import type {
   Animal,
   PaginatedAnimalResponse,
   AnimalSpeciesCount,
   OrderByInput,
-} from "../entities/types";
+} from '../entities/types';
 
 export class AnimalService {
   constructor(private readonly animalRepository: AnimalRepository) {}
@@ -38,11 +38,11 @@ export class AnimalService {
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    
+
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-    
+
     return age;
   }
 

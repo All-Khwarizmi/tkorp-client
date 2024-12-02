@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts'
-import { useStatistics } from '../hooks/use-statistics'
-import { LoadingSkeleton } from './loading-skeleton'
-import type { AnimalSpeciesCount } from '../src/core/entities/types'
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { useStatistics } from '../hooks/use-statistics';
+import { LoadingSkeleton } from './loading-skeleton';
+import type { AnimalSpeciesCount } from '../src/core/entities/types';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d']
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
 
 interface ChartData {
   name: string;
@@ -13,16 +13,16 @@ interface ChartData {
 }
 
 export default function SpeciesDistribution() {
-  const { speciesDistribution, isLoading } = useStatistics()
+  const { speciesDistribution, isLoading } = useStatistics();
 
   if (isLoading) {
-    return <LoadingSkeleton />
+    return <LoadingSkeleton />;
   }
 
   const data: ChartData[] = speciesDistribution.map((item: AnimalSpeciesCount) => ({
     name: item.species,
-    value: item.count
-  }))
+    value: item.count,
+  }));
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -44,5 +44,5 @@ export default function SpeciesDistribution() {
         <Legend />
       </PieChart>
     </ResponsiveContainer>
-  )
+  );
 }

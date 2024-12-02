@@ -15,13 +15,13 @@ Implémentation technique des interfaces définies dans le core.
 
 ```typescript
 // src/core/entities/__tests__/todo.test.ts
-import { describe, it, expect } from "vitest";
-import { TodoSchema } from "../todo";
+import { describe, it, expect } from 'vitest';
+import { TodoSchema } from '../todo';
 
-describe("Todo Entity", () => {
-  it("should validate a correct todo", () => {
+describe('Todo Entity', () => {
+  it('should validate a correct todo', () => {
     const validTodo = {
-      title: "Test todo",
+      title: 'Test todo',
       completed: false,
     };
 

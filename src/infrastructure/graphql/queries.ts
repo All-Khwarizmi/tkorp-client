@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const ANIMALS_QUERY = gql`
   query GetAnimals($page: Int!, $take: Int!, $orderBy: OrderByInput) {

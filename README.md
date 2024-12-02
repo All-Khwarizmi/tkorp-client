@@ -25,11 +25,13 @@ Interface utilisateur pour le système de gestion d'animaux de compagnie, constr
 ## Configuration Initiale
 
 1. Installation des dépendances supplémentaires
+
 ```bash
 pnpm add @apollo/client graphql
 ```
 
 2. Configuration des variables d'environnement
+
 ```env
 NEXT_PUBLIC_GRAPHQL_URL=https://[railway-url]/graphql
 ```
@@ -37,11 +39,13 @@ NEXT_PUBLIC_GRAPHQL_URL=https://[railway-url]/graphql
 ## Backlog des Fonctionnalités
 
 ### 1. Configuration GraphQL
+
 - [ ] Setup Apollo Client dans src/infrastructure/graphql
 - [ ] Génération des types TypeScript depuis le schema
 - [ ] Configuration du provider dans app/layout.tsx
 
 ### 2. Core Layer (src/core)
+
 - [ ] Entities
   - [ ] Animal.ts (types et interfaces)
   - [ ] Person.ts (types et interfaces)
@@ -52,6 +56,7 @@ NEXT_PUBLIC_GRAPHQL_URL=https://[railway-url]/graphql
   - [ ] StatisticsService.ts
 
 ### 3. Infrastructure Layer (src/infrastructure)
+
 - [ ] GraphQL
   - [ ] Queries pour les animaux
   - [ ] Queries pour les personnes
@@ -62,6 +67,7 @@ NEXT_PUBLIC_GRAPHQL_URL=https://[railway-url]/graphql
   - [ ] StatisticsRepository
 
 ### 4. Routes et Pages (app)
+
 - [ ] Layout principal avec navigation
 - [ ] Page d'accueil avec statistiques globales
 - [ ] /animals
@@ -79,6 +85,7 @@ NEXT_PUBLIC_GRAPHQL_URL=https://[railway-url]/graphql
 ### 5. Prompts V0 pour les Composants UI
 
 #### Page d'accueil
+
 ```prompt
 Une page d'accueil moderne pour une application de gestion d'animaux de compagnie.
 En-tête avec statistiques globales (nombre total d'animaux, propriétaires).
@@ -88,6 +95,7 @@ Style: Moderne, épuré, utilisant des tons doux.
 ```
 
 #### Liste des Animaux
+
 ```prompt
 Une grille responsive d'animaux.
 Chaque carte montre: photo, nom, espèce, propriétaire.
@@ -98,6 +106,7 @@ Style: Cards avec ombres légères, hover effects subtils.
 ```
 
 #### Détails Animal
+
 ```prompt
 Page détaillée d'un animal.
 Grande photo en haut.
@@ -108,6 +117,7 @@ Style: Layout en sections distinctes, typographie claire.
 ```
 
 #### Liste des Propriétaires
+
 ```prompt
 Liste des propriétaires avec cards.
 Informations: nom, email, nombre d'animaux.
@@ -116,6 +126,7 @@ Style: Design professionnel, emphasis sur la lisibilité.
 ```
 
 #### Page Statistiques
+
 ```prompt
 Dashboard de statistiques.
 Graphiques: distribution des espèces, âges, poids.
