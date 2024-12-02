@@ -1,11 +1,14 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from 'components/ui/card';
 import { useQuery } from '@apollo/client';
 import { ANIMALS_QUERY } from '@/src/infrastructure/graphql/queries';
 import { LoadingSkeleton } from './loading-skeleton';
 import type { AnimalFilters } from './animal-filters';
 import type { Animal } from '@/src/core/entities/types';
+import Link from 'next/link';
+import Image from 'next/image';
+import { getAnimalImage } from '@/lib/utils';
 
 interface AnimalListProps {
   filters: AnimalFilters;
@@ -66,9 +69,17 @@ export default function AnimalList({ filters }: AnimalListProps) {
     },
   });
 
-  if (loading) return <LoadingSkeleton />;
-  if (error) return <div>Une erreur est survenue lors du chargement des données.</div>;
-  if (!data?.animals.items.length) return <div>Aucun animal trouvé.</div>;
+  if (loading) {
+    return <LoadingSkeleton />;
+  }
+
+  if (error) {
+    return <div>Une erreur est survenue lors du chargement des données.</div>;
+  }
+
+  if (!data?.animals.items.length) {
+    return <div>Aucun animal trouvé.</div>;
+  }
 
   // Filter animals based on species, age range, and weight range
   const filteredAnimals = data.animals.items.filter((animal) => {
@@ -105,48 +116,46 @@ export default function AnimalList({ filters }: AnimalListProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {filteredAnimals.map((animal) => (
-        <Card
-          key={animal.id}
-          className="overflow-hidden transition-all duration-300 hover:shadow-lg"
-        >
-          <CardContent className="p-6">
-            <div className="flex items-center mb-4">
-              <div
-                className="w-16 h-16 rounded-full mr-4 flex items-center justify-center"
-                style={{
-                  backgroundColor: animal.color ? `#${animal.color}20` : '#f3f4f6',
-                  color: animal.color ? `#${animal.color}` : '#6b7280',
-                }}
-              >
-                <span className="text-2xl font-bold">{animal.name.charAt(0)}</span>
+        <Link key={animal.id} href={`/animals/${animal.id}`}>
+          <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer">
+            <div className="aspect-w-16 aspect-h-9 relative h-48">
+              <Image
+                src={getAnimalImage(animal.species, animal.id)}
+                alt={animal.name}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <CardContent className="p-6">
+              <div className="flex items-center mb-4">
+                <div>
+                  <h3 className="font-semibold text-lg">{animal.name}</h3>
+                  <p className="text-sm text-gray-600">
+                    {speciesTranslations[animal.species] || animal.species}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold text-lg">{animal.name}</h3>
-                <p className="text-sm text-gray-600">
-                  {speciesTranslations[animal.species] || animal.species}
+              <div className="space-y-2 text-sm">
+                <p>Race: {animal.breed}</p>
+                <p>Âge: {calculateAge(animal.dateOfBirth)} ans</p>
+                <p>Poids: {formatWeight(animal.weight)} kg</p>
+                {animal.color && (
+                  <div className="flex items-center gap-2">
+                    <span>Couleur:</span>
+                    <div
+                      className="w-4 h-4 rounded-full border border-gray-200"
+                      style={{ backgroundColor: `#${animal.color}` }}
+                      title={`#${animal.color}`}
+                    />
+                  </div>
+                )}
+                <p className="text-gray-500 mt-2">
+                  Propriétaire: {animal.owner.firstName} {animal.owner.lastName}
                 </p>
               </div>
-            </div>
-            <div className="space-y-2 text-sm">
-              <p>Race: {animal.breed}</p>
-              <p>Âge: {calculateAge(animal.dateOfBirth)} ans</p>
-              <p>Poids: {formatWeight(animal.weight)} kg</p>
-              {animal.color && (
-                <div className="flex items-center gap-2">
-                  <span>Couleur:</span>
-                  <div
-                    className="w-4 h-4 rounded-full border border-gray-200"
-                    style={{ backgroundColor: `#${animal.color}` }}
-                    title={`#${animal.color}`}
-                  />
-                </div>
-              )}
-              <p className="text-gray-500 mt-2">
-                Propriétaire: {animal.owner.firstName} {animal.owner.lastName}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
       ))}
     </div>
   );
