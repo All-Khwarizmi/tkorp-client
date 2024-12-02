@@ -3,8 +3,6 @@ import { PersonService } from "./person.service";
 import type {
   AnimalSpeciesCount,
   Animal,
-  OwnershipStats,
-  OwnerWeightStats,
 } from "../entities/types";
 
 export class StatisticsService {
