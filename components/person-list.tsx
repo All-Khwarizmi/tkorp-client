@@ -1,13 +1,16 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import { Button } from 'components/ui/button';
 import { Mail, Phone } from 'lucide-react';
 import { useQuery } from '@apollo/client';
 import { PERSONS_QUERY } from '@/src/infrastructure/graphql/queries';
 import { LoadingSkeleton } from './loading-skeleton';
 import type { PersonFilters } from './person-filters';
 import type { Person } from '@/src/core/entities/types';
+import Link from 'next/link';
+import Image from 'next/image';
+import { getPersonImage, getAnimalThumbnail } from '@/lib/utils';
 
 interface PersonListProps {
   filters: PersonFilters;
@@ -41,9 +44,17 @@ const PersonList = ({ filters }: PersonListProps) => {
     },
   });
 
-  if (loading) return <LoadingSkeleton />;
-  if (error) return <div>Une erreur est survenue lors du chargement des données.</div>;
-  if (!data?.persons.items.length) return <div>Aucun propriétaire trouvé.</div>;
+  if (loading) {
+    return <LoadingSkeleton />;
+  }
+
+  if (error) {
+    return <div>Une erreur est survenue lors du chargement des données.</div>;
+  }
+
+  if (!data?.persons.items.length) {
+    return <div>Aucun propriétaire trouvé.</div>;
+  }
 
   const filteredPersons = data.persons.items.filter((person) => {
     let matches = true;
@@ -102,69 +113,70 @@ const PersonList = ({ filters }: PersonListProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {filteredPersons.map((person) => (
-        <Card
-          key={person.id}
-          className="overflow-hidden transition-all duration-300 hover:shadow-lg"
-        >
-          <CardContent className="p-6">
-            <div className="flex items-center mb-4">
-              <div className="w-16 h-16 bg-blue-100 rounded-full mr-4 flex items-center justify-center">
-                <span className="text-2xl font-bold text-blue-600">
-                  {person.firstName.charAt(0)}
-                </span>
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">
-                  {person.firstName} {person.lastName}
-                </h3>
-                <p className="text-sm text-gray-600">{person.animals.length} animaux</p>
-              </div>
+        <Link key={person.id} href={`/persons/${person.id}`}>
+          <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer">
+            <div className="aspect-w-16 aspect-h-9 relative h-48">
+              <Image
+                src={getPersonImage(person.id)}
+                alt={`${person.firstName} ${person.lastName}`}
+                fill
+                className="object-cover"
+              />
             </div>
-            {person.animals.length > 0 && (
-              <div className="mb-4">
-                <h4 className="font-semibold mb-2">Animaux:</h4>
-                <div className="flex flex-wrap gap-2">
-                  {person.animals.map((animal) => (
-                    <div key={animal.id} className="relative group">
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center"
-                        style={{
-                          backgroundColor: animal.color ? `#${animal.color}20` : '#f3f4f6',
-                          color: animal.color ? `#${animal.color}` : '#6b7280',
-                        }}
-                      >
-                        <span className="text-xs font-medium">{animal.name.charAt(0)}</span>
-                      </div>
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                        <p>{animal.name}</p>
-                        <p>{speciesTranslations[animal.species] || animal.species}</p>
-                        <p>
-                          {gramsToKg(animal.weight).toLocaleString('fr-FR', {
-                            minimumFractionDigits: 1,
-                            maximumFractionDigits: 1,
-                          })}{' '}
-                          kg
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+            <CardContent className="p-6">
+              <div className="flex items-center mb-4">
+                <div>
+                  <h3 className="font-semibold text-lg">
+                    {person.firstName} {person.lastName}
+                  </h3>
+                  <p className="text-sm text-gray-600">{person.animals.length} animaux</p>
                 </div>
               </div>
-            )}
-            <div className="space-y-2">
-              <Button variant="outline" className="w-full justify-start">
-                <Mail className="mr-2 h-4 w-4" />
-                {person.email}
-              </Button>
-              {person.phoneNumber && (
-                <Button variant="outline" className="w-full justify-start">
-                  <Phone className="mr-2 h-4 w-4" />
-                  {person.phoneNumber}
-                </Button>
+              {person.animals.length > 0 && (
+                <div className="mb-4">
+                  <h4 className="font-semibold mb-2">Animaux:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {person.animals.map((animal) => (
+                      <div key={animal.id} className="relative group">
+                        <div className="w-10 h-10 relative rounded-full overflow-hidden">
+                          <Image
+                            src={getAnimalThumbnail(animal.species, animal.id)}
+                            alt={animal.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                          <p>{animal.name}</p>
+                          <p>{speciesTranslations[animal.species] || animal.species}</p>
+                          <p>
+                            {gramsToKg(animal.weight).toLocaleString('fr-FR', {
+                              minimumFractionDigits: 1,
+                              maximumFractionDigits: 1,
+                            })}{' '}
+                            kg
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
-            </div>
-          </CardContent>
-        </Card>
+              <div className="space-y-2">
+                <Button variant="outline" className="w-full justify-start">
+                  <Mail className="mr-2 h-4 w-4" />
+                  {person.email}
+                </Button>
+                {person.phoneNumber && (
+                  <Button variant="outline" className="w-full justify-start">
+                    <Phone className="mr-2 h-4 w-4" />
+                    {person.phoneNumber}
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
       ))}
     </div>
   );
