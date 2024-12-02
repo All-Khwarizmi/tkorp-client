@@ -1,26 +1,25 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { Card, CardContent } from 'components/ui/card';
 import { useQuery } from '@apollo/client';
-import { ANIMALS_QUERY } from '@/src/infrastructure/graphql/queries';
+import { ANIMALS_QUERY } from '../src/infrastructure/graphql/queries';
 import { LoadingSkeleton } from './loading-skeleton';
 import type { AnimalFilters } from './animal-filters';
-import type { Animal } from '@/src/core/entities/types';
+import type { Animal, PaginatedAnimalResponse } from '../src/core/entities/types';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getAnimalImage } from '@/lib/utils';
+import { getAnimalImage } from '../lib/utils';
 
 interface AnimalListProps {
   filters: AnimalFilters;
 }
 
 interface AnimalsData {
-  animals: {
-    items: Animal[];
-    total: number;
-    hasMore: boolean;
-  };
+  animals: PaginatedAnimalResponse;
 }
+
+const ITEMS_PER_PAGE = 12;
 
 const speciesTranslations: Record<string, string> = {
   Dog: 'Chien',
@@ -55,10 +54,13 @@ const formatWeight = (grams: number): string => {
 };
 
 export default function AnimalList({ filters }: AnimalListProps) {
-  const { data, loading, error } = useQuery<AnimalsData>(ANIMALS_QUERY, {
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const currentPage = useRef(1);
+
+  const { data, loading, error, fetchMore } = useQuery<AnimalsData>(ANIMALS_QUERY, {
     variables: {
       page: 1,
-      take: 100,
+      take: ITEMS_PER_PAGE,
       ...(filters.search && { search: filters.search }),
       ...(filters.sort && {
         orderBy: {
@@ -69,7 +71,50 @@ export default function AnimalList({ filters }: AnimalListProps) {
     },
   });
 
-  if (loading) {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting && data?.animals.hasMore) {
+          currentPage.current += 1;
+          fetchMore({
+            variables: {
+              page: currentPage.current,
+            },
+            updateQuery: (
+              prev: AnimalsData,
+              { fetchMoreResult }: { fetchMoreResult: AnimalsData }
+            ) => {
+              if (!fetchMoreResult) {
+                return prev;
+              }
+
+              return {
+                animals: {
+                  ...fetchMoreResult.animals,
+                  items: [...prev.animals.items, ...fetchMoreResult.animals.items],
+                },
+              };
+            },
+          });
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [data?.animals.hasMore, fetchMore]);
+
+  if (loading && !data) {
     return <LoadingSkeleton />;
   }
 
@@ -82,7 +127,7 @@ export default function AnimalList({ filters }: AnimalListProps) {
   }
 
   // Filter animals based on species, age range, and weight range
-  const filteredAnimals = data.animals.items.filter((animal) => {
+  const filteredAnimals = data.animals.items.filter((animal: Animal) => {
     let matches = true;
 
     if (filters.species) {
@@ -114,49 +159,58 @@ export default function AnimalList({ filters }: AnimalListProps) {
   });
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {filteredAnimals.map((animal) => (
-        <Link key={animal.id} href={`/animals/${animal.id}`}>
-          <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer">
-            <div className="aspect-w-16 aspect-h-9 relative h-48">
-              <Image
-                src={getAnimalImage(animal.species, animal.id)}
-                alt={animal.name}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <CardContent className="p-6">
-              <div className="flex items-center mb-4">
-                <div>
-                  <h3 className="font-semibold text-lg">{animal.name}</h3>
-                  <p className="text-sm text-gray-600">
-                    {speciesTranslations[animal.species] || animal.species}
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredAnimals.map((animal: Animal) => (
+          <Link key={animal.id} href={`/animals/${animal.id}`}>
+            <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer">
+              <div className="aspect-w-16 aspect-h-9 relative h-48">
+                <Image
+                  src={getAnimalImage(animal.species, animal.id)}
+                  alt={animal.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  <div>
+                    <h3 className="font-semibold text-lg">{animal.name}</h3>
+                    <p className="text-sm text-gray-600">
+                      {speciesTranslations[animal.species] || animal.species}
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <p>Race: {animal.breed}</p>
+                  <p>Âge: {calculateAge(animal.dateOfBirth)} ans</p>
+                  <p>Poids: {formatWeight(animal.weight)} kg</p>
+                  {animal.color && (
+                    <div className="flex items-center gap-2">
+                      <span>Couleur:</span>
+                      <div
+                        className="w-4 h-4 rounded-full border border-gray-200"
+                        style={{ backgroundColor: `#${animal.color}` }}
+                        title={`#${animal.color}`}
+                      />
+                    </div>
+                  )}
+                  <p className="text-gray-500 mt-2">
+                    Propriétaire: {animal.owner.firstName} {animal.owner.lastName}
                   </p>
                 </div>
-              </div>
-              <div className="space-y-2 text-sm">
-                <p>Race: {animal.breed}</p>
-                <p>Âge: {calculateAge(animal.dateOfBirth)} ans</p>
-                <p>Poids: {formatWeight(animal.weight)} kg</p>
-                {animal.color && (
-                  <div className="flex items-center gap-2">
-                    <span>Couleur:</span>
-                    <div
-                      className="w-4 h-4 rounded-full border border-gray-200"
-                      style={{ backgroundColor: `#${animal.color}` }}
-                      title={`#${animal.color}`}
-                    />
-                  </div>
-                )}
-                <p className="text-gray-500 mt-2">
-                  Propriétaire: {animal.owner.firstName} {animal.owner.lastName}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      ))}
-    </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
+      <div ref={loadMoreRef} className="h-10 mt-4">
+        {loading && (
+          <div className="flex justify-center">
+            <LoadingSkeleton />
+          </div>
+        )}
+      </div>
+    </>
   );
 }
