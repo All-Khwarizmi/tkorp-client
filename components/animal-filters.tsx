@@ -37,7 +37,7 @@ export default function AnimalFilters({ onFilterChange }: AnimalFiltersProps) {
       species: species || undefined,
       ageRange: ageRange || undefined,
       weightRange: weightRange || undefined,
-      sort: sort || undefined
+      sort: sort || undefined,
     });
   };
 
@@ -110,8 +110,12 @@ export default function AnimalFilters({ onFilterChange }: AnimalFiltersProps) {
         </Select>
       </div>
       <div className="flex gap-4">
-        <Button type="submit" variant="default">Appliquer les filtres</Button>
-        <Button type="button" variant="outline" onClick={handleReset}>Réinitialiser</Button>
+        <Button type="submit" variant="default">
+          Appliquer les filtres
+        </Button>
+        <Button type="button" variant="outline" onClick={handleReset}>
+          Réinitialiser
+        </Button>
       </div>
     </form>
   );
