@@ -7,14 +7,6 @@ import type {
   OwnerWeightStats,
 } from '../src/core/entities/types';
 
-interface StatisticsData {
-  mostCommonSpecies: AnimalSpeciesCount[];
-  topOwner: OwnershipStats;
-  heaviestAnimal: Animal;
-  oldestAnimal: Animal;
-  ownerWithHeaviestPets: OwnerWeightStats;
-}
-
 export function useStatistics() {
   const { data: speciesData, loading: speciesLoading } = useQuery<{
     mostCommonSpecies: AnimalSpeciesCount[];

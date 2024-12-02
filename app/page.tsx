@@ -9,7 +9,7 @@ export default function HomePage() {
   const { stats, loading } = useHomeStats();
 
   if (loading || !stats) {
-    return <div>Chargement...</div>;
+    return <div className="h-screen flex items-center justify-center">Loading...</div>;
   }
 
   return (
@@ -56,19 +56,6 @@ export default function HomePage() {
               title="Espèce la plus commune"
               value={`${stats.mostCommonSpecies.species}, ${stats.mostCommonSpecies.count}`}
             />
-          </div>
-        </section>
-
-        {/* Recent Additions Section */}
-        <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Derniers Ajouts</h2>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* À implémenter avec les données réelles */}
-            <div className="p-6 bg-white rounded-lg shadow">
-              <p className="text-muted-foreground">
-                Les derniers animaux ajoutés seront affichés ici...
-              </p>
-            </div>
           </div>
         </section>
       </Suspense>

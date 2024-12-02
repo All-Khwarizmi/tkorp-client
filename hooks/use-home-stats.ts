@@ -46,7 +46,7 @@ export function useHomeStats() {
           (acc: number, curr: AnimalSpeciesCount) => acc + curr.count,
           0
         ),
-        totalOwners: 0, // À implémenter avec le service approprié
+        totalOwners: topOwner.animalCount,
         oldestAnimal: {
           name: oldestAnimal.name,
           age: new Date().getFullYear() - new Date(oldestAnimal.dateOfBirth).getFullYear(),
