@@ -47,6 +47,6 @@ export interface OrderByInput {
   direction: 'ASC' | 'DESC';
 }
 
-// Apollo Client type policies
-export interface PaginatedAnimalResponse extends PaginatedResponse<Animal> {}
-export interface PaginatedPersonResponse extends PaginatedResponse<Person> {}
+// Using type aliases instead of empty interfaces
+export type PaginatedAnimalResponse = PaginatedResponse<Animal>;
+export type PaginatedPersonResponse = PaginatedResponse<Person>;

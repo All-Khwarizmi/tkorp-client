@@ -31,10 +31,18 @@ function calculateAge(dateOfBirth: string): number {
 }
 
 function getAgeGroup(age: number): string {
-  if (age < 2) return '0-2';
-  if (age < 5) return '3-5';
-  if (age < 8) return '6-8';
-  if (age < 11) return '9-11';
+  if (age < 2) {
+    return '0-2';
+  }
+  if (age < 5) {
+    return '3-5';
+  }
+  if (age < 8) {
+    return '6-8';
+  }
+  if (age < 11) {
+    return '9-11';
+  }
   return '12+';
 }
 

@@ -9,6 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
+  TooltipProps,
 } from 'recharts';
 import { useQuery } from '@apollo/client';
 import { ANIMALS_QUERY } from '../src/infrastructure/graphql/queries';
@@ -79,9 +80,9 @@ export default function WeightDistribution() {
   // Get unique species from the filtered data
   const uniqueSpecies = Array.from(new Set(processedData.map((item) => item.species)));
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
     if (active && payload && payload.length) {
-      const data = payload[0].payload;
+      const data = payload[0].payload as ProcessedData;
       return (
         <div className="bg-white p-2 border border-gray-200 rounded shadow">
           <p className="font-bold">{data.name}</p>

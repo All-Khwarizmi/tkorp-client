@@ -55,13 +55,17 @@ export class StatisticsService {
   }
 
   calculateAverageWeight(animals: Animal[]): number {
-    if (!animals.length) return 0;
+    if (!animals.length) {
+      return 0;
+    }
     const totalWeight = animals.reduce((sum, animal) => sum + animal.weight, 0);
     return totalWeight / animals.length;
   }
 
   calculateAverageAge(animals: Animal[]): number {
-    if (!animals.length) return 0;
+    if (!animals.length) {
+      return 0;
+    }
     const totalAge = animals.reduce(
       (sum, animal) => sum + this.animalService.getAnimalAge(animal.dateOfBirth),
       0
