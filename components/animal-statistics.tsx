@@ -1,21 +1,25 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import { AnimalService } from '@/src/core/services/animal.service';
+import { AnimalRepository } from '@/src/infrastructure/repositories/animal.repository';
 
-// This should be replaced with actual data fetching logic
-const data = [
-  {
-    name: "Poids moyen de l'espèce",
-    total: 20,
-  },
-  {
-    name: "Poids de l'animal",
-    total: 25,
-  },
-];
+const animalService = new AnimalService(new AnimalRepository());
 
 export default function AnimalStatistics() {
+  const [data] = useState([
+    {
+      name: "Poids moyen de l'espèce",
+      total: 0,
+    },
+    {
+      name: "Poids de l'animal",
+      total: 0,
+    },
+  ]);
+
   return (
     <Card>
       <CardHeader>
@@ -36,7 +40,7 @@ export default function AnimalStatistics() {
               fontSize={12}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value) => `${value} kg`}
+              tickFormatter={(value) => animalService.formatWeight(value)}
             />
             <Bar dataKey="total" fill="#adfa1d" radius={[4, 4, 0, 0]} />
           </BarChart>
