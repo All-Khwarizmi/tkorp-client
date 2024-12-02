@@ -1,130 +1,155 @@
-# NextJS Modern Template
+# Pet Management Frontend
 
-Un template moderne et optimisé pour le développement d'applications web, conçu avec une architecture clean et les meilleures pratiques actuelles.
+Interface utilisateur pour le système de gestion d'animaux de compagnie, construite avec Next.js et l'App Router.
 
-## 🎯 Objectifs du Template
-
-- **Architecture Propre**: Séparation claire des responsabilités selon les principes de la Clean Architecture
-- **Performance**: Optimisé pour le SEO et les Core Web Vitals
-- **Maintenabilité**: Structure de code claire et testable
-- **Developer Experience**: Configuration complète des outils de développement
-
-## 🛠 Stack Technique
-
-### Core
-- **[Next.js 14](https://nextjs.org/)**: Framework React avec App Router et Server Components
-- **[TypeScript](https://www.typescriptlang.org/)**: Typage statique pour une meilleure maintenabilité
-- **[React 18](https://reactjs.org/)**: Dernière version avec Hooks et Concurrent Features
-
-### State Management & Data Fetching
-- **[Zustand](https://zustand-demo.pmnd.rs/)**: Gestion d'état minimaliste et performante
-- **[TanStack Query](https://tanstack.com/query)**: Gestion optimisée des requêtes et du cache
-- **[Zod](https://zod.dev)**: Validation de schémas TypeScript-first
-
-### Styling
-- **[Tailwind CSS](https://tailwindcss.com/)**: Utilitaire CSS avec JIT compiler
-- **[shadcn/ui](https://ui.shadcn.com/)**: Composants réutilisables et accessibles
-- **[class-variance-authority](https://cva.style/)**: Gestion des variants de composants
-- **[tailwind-merge](https://github.com/dcastil/tailwind-merge)**: Fusion intelligente des classes Tailwind
-- **[Lucide Icons](https://lucide.dev/)**: Icônes modernes et personnalisables
-
-### Testing
-- **[Vitest](https://vitest.dev/)**: Framework de test moderne et rapide
-- **[Testing Library](https://testing-library.com/)**: Tests centrés sur l'utilisateur
-- **[Jest](https://jestjs.io/)**: Support additionnel pour les tests
-
-### Developer Experience
-- **[ESLint](https://eslint.org/)**: Linting avec règles TypeScript
-- **[Prettier](https://prettier.io/)**: Formatage de code consistant
-- **[Husky](https://typicode.github.io/husky/)**: Git hooks automatisés
-- **[lint-staged](https://github.com/okonet/lint-staged)**: Linting des fichiers staged
-
-## 📁 Structure du Projet
+## Structure du Projet
 
 ```
-.
-├── app/                  # Next.js App Router
-│   ├── layout.tsx       # Layout racine
-│   └── page.tsx         # Page d'accueil
+├── app/                      # App Router de Next.js
+│   ├── (routes)/            # Routes de l'application
+│   │   ├── animals/         # Pages des animaux
+│   │   ├── persons/         # Pages des propriétaires
+│   │   └── statistics/      # Pages des statistiques
+│   ├── layout.tsx           # Layout principal
+│   └── page.tsx             # Page d'accueil
 ├── src/
-│   ├── core/            # Logique métier
-│   │   ├── entities/    # Modèles de données
-│   │   ├── repositories/# Interfaces de données
-│   │   └── use-cases/   # Logique métier
-│   ├── infrastructure/  # Implémentation technique
-│   └── ui/             # Composants React
-└── lib/                # Utilitaires partagés
+│   ├── core/                # Logique métier
+│   │   ├── entities/        # Types et interfaces
+│   │   └── services/        # Services métier
+│   └── infrastructure/      # Couche d'infrastructure
+│       ├── graphql/         # Configuration et queries GraphQL
+│       └── repositories/    # Repositories pour l'accès aux données
+└── lib/                     # Utilitaires et configurations
 ```
 
-## 🚀 Démarrage Rapide
+## Configuration Initiale
 
+1. Installation des dépendances supplémentaires
 ```bash
-# Installation des dépendances
-pnpm install
-
-# Développement
-pnpm dev
-
-# Tests
-pnpm test
-
-# Build production
-pnpm build
+pnpm add @apollo/client graphql
 ```
 
-## 🧪 Testing
+2. Configuration des variables d'environnement
+```env
+NEXT_PUBLIC_GRAPHQL_URL=https://[railway-url]/graphql
+```
 
-Le projet utilise Vitest pour les tests unitaires et d'intégration :
+## Backlog des Fonctionnalités
+
+### 1. Configuration GraphQL
+- [ ] Setup Apollo Client dans src/infrastructure/graphql
+- [ ] Génération des types TypeScript depuis le schema
+- [ ] Configuration du provider dans app/layout.tsx
+
+### 2. Core Layer (src/core)
+- [ ] Entities
+  - [ ] Animal.ts (types et interfaces)
+  - [ ] Person.ts (types et interfaces)
+  - [ ] Statistics.ts (types pour les stats)
+- [ ] Services
+  - [ ] AnimalService.ts
+  - [ ] PersonService.ts
+  - [ ] StatisticsService.ts
+
+### 3. Infrastructure Layer (src/infrastructure)
+- [ ] GraphQL
+  - [ ] Queries pour les animaux
+  - [ ] Queries pour les personnes
+  - [ ] Queries pour les statistiques
+- [ ] Repositories
+  - [ ] AnimalRepository
+  - [ ] PersonRepository
+  - [ ] StatisticsRepository
+
+### 4. Routes et Pages (app)
+- [ ] Layout principal avec navigation
+- [ ] Page d'accueil avec statistiques globales
+- [ ] /animals
+  - [ ] Liste paginée
+  - [ ] Détails d'un animal
+  - [ ] Filtres et recherche
+- [ ] /persons
+  - [ ] Liste paginée
+  - [ ] Détails d'un propriétaire
+  - [ ] Liste des animaux associés
+- [ ] /statistics
+  - [ ] Vue d'ensemble
+  - [ ] Graphiques et visualisations
+
+### 5. Prompts V0 pour les Composants UI
+
+#### Page d'accueil
+```prompt
+Une page d'accueil moderne pour une application de gestion d'animaux de compagnie.
+En-tête avec statistiques globales (nombre total d'animaux, propriétaires).
+Grille des derniers animaux ajoutés avec photos.
+Section statistiques avec graphiques.
+Style: Moderne, épuré, utilisant des tons doux.
+```
+
+#### Liste des Animaux
+```prompt
+Une grille responsive d'animaux.
+Chaque carte montre: photo, nom, espèce, propriétaire.
+Filtres en haut: espèce, âge, poids.
+Barre de recherche.
+Pagination en bas.
+Style: Cards avec ombres légères, hover effects subtils.
+```
+
+#### Détails Animal
+```prompt
+Page détaillée d'un animal.
+Grande photo en haut.
+Informations détaillées (nom, espèce, âge, poids).
+Section propriétaire avec lien.
+Statistiques spécifiques.
+Style: Layout en sections distinctes, typographie claire.
+```
+
+#### Liste des Propriétaires
+```prompt
+Liste des propriétaires avec cards.
+Informations: nom, email, nombre d'animaux.
+Filtres et recherche.
+Style: Design professionnel, emphasis sur la lisibilité.
+```
+
+#### Page Statistiques
+```prompt
+Dashboard de statistiques.
+Graphiques: distribution des espèces, âges, poids.
+Cards pour les records (plus vieil animal, plus lourd, etc).
+Style: Dashboard moderne, couleurs contrastées pour les données.
+```
+
+## Tests
 
 ```bash
-# Lancer tous les tests
+# Tests unitaires
 pnpm test
 
-# Mode watch
+# Tests en mode watch
 pnpm test:watch
 ```
 
-## 📝 Conventions de Code
+## Développement
 
-- **TypeScript**: Strict mode activé
-- **Import Aliases**: Chemins d'import simplifiés avec `@/`
-- **Components**: Un composant par fichier
-- **Testing**: Tests côté composants et logique métier
-- **State**: Zustand pour l'état global, React Query pour les données serveur
+```bash
+# Lancer le serveur de développement
+pnpm dev
 
-## 🎨 Design System
+# Build production
+pnpm build
 
-Le projet utilise shadcn/ui pour les composants UI :
+# Lancer en production
+pnpm start
+```
 
-- Composants accessibles (ARIA)
-- Thème personnalisable
-- Support dark/light mode
-- Animations fluides
+## Conventions de Code
 
-## 🔒 Clean Architecture
-
-L'architecture suit les principes SOLID :
-
-1. **Core**: Logique métier pure
-2. **Infrastructure**: Implémentation technique
-3. **UI**: Composants et hooks React
-4. **App**: Routes et pages Next.js
-
-## 📚 Documentation
-
-- `/src/core/README.md`: Documentation de la logique métier
-- `/src/infrastructure/README.md`: Documentation technique
-- `/src/ui/README.md`: Guide des composants
-
-## 🤝 Contribution
-
-1. Fork le projet
-2. Créer une branche (`git checkout -b feature/AmazingFeature`)
-3. Commit les changements (`git commit -m 'Add AmazingFeature'`)
-4. Push la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
-
-## 📄 License
-
-MIT
-
+- Utilisation de TypeScript strict
+- Tests unitaires pour les services et repositories
+- Composants UI générés par V0
+- Architecture hexagonale
+- Gestion d'état avec React Query et Zustand
