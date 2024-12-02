@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useQuery } from "@apollo/client";
 import { ANIMALS_QUERY } from "@/src/infrastructure/graphql/queries";
 import { LoadingSkeleton } from "./loading-skeleton";
@@ -20,6 +19,16 @@ interface AnimalsData {
   };
 }
 
+const speciesTranslations: Record<string, string> = {
+  Dog: "Chien",
+  Cat: "Chat",
+  Bird: "Oiseau",
+  Rabbit: "Lapin",
+  Hamster: "Hamster",
+  Turtle: "Tortue",
+  Fish: "Poisson",
+};
+
 function calculateAge(dateOfBirth: string): number {
   const birthDate = new Date(dateOfBirth);
   const today = new Date();
@@ -33,8 +42,14 @@ function calculateAge(dateOfBirth: string): number {
   return age;
 }
 
-// Convert weight from grams to kilograms for display
 const gramsToKg = (grams: number): number => grams / 1000;
+
+const formatWeight = (grams: number): string => {
+  return gramsToKg(grams).toLocaleString("fr-FR", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1
+  });
+};
 
 export default function AnimalList({ filters }: AnimalListProps) {
   const { data, loading, error } = useQuery<AnimalsData>(ANIMALS_QUERY, {
@@ -96,21 +111,39 @@ export default function AnimalList({ filters }: AnimalListProps) {
         >
           <CardContent className="p-6">
             <div className="flex items-center mb-4">
-              <div className="w-16 h-16 bg-gray-200 rounded-full mr-4 flex items-center justify-center">
-                <span className="text-2xl font-bold text-gray-500">
+              <div 
+                className="w-16 h-16 rounded-full mr-4 flex items-center justify-center"
+                style={{ 
+                  backgroundColor: animal.color ? `#${animal.color}20` : '#f3f4f6',
+                  color: animal.color ? `#${animal.color}` : '#6b7280'
+                }}
+              >
+                <span className="text-2xl font-bold">
                   {animal.name.charAt(0)}
                 </span>
               </div>
               <div>
                 <h3 className="font-semibold text-lg">{animal.name}</h3>
-                <p className="text-sm text-gray-600">{animal.species}</p>
+                <p className="text-sm text-gray-600">
+                  {speciesTranslations[animal.species] || animal.species}
+                </p>
               </div>
             </div>
             <div className="space-y-2 text-sm">
               <p>Race: {animal.breed}</p>
               <p>Âge: {calculateAge(animal.dateOfBirth)} ans</p>
-              <p>Poids: {gramsToKg(animal.weight).toLocaleString('fr-FR')} kg</p>
-              <p className="text-gray-500">
+              <p>Poids: {formatWeight(animal.weight)} kg</p>
+              {animal.color && (
+                <div className="flex items-center gap-2">
+                  <span>Couleur:</span>
+                  <div 
+                    className="w-4 h-4 rounded-full border border-gray-200"
+                    style={{ backgroundColor: `#${animal.color}` }}
+                    title={`#${animal.color}`}
+                  />
+                </div>
+              )}
+              <p className="text-gray-500 mt-2">
                 Propriétaire: {animal.owner.firstName} {animal.owner.lastName}
               </p>
             </div>

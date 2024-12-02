@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone } from "lucide-react";
@@ -22,28 +21,42 @@ interface PersonsData {
   };
 }
 
-export default function PersonList({ filters }: PersonListProps) {
+const speciesTranslations: Record<string, string> = {
+  Dog: "Chien",
+  Cat: "Chat",
+  Bird: "Oiseau",
+  Rabbit: "Lapin",
+  Hamster: "Hamster",
+  Turtle: "Tortue",
+  Fish: "Poisson",
+};
+
+const gramsToKg = (grams: number): number => grams / 1000;
+
+const PersonList = ({ filters }: PersonListProps) => {
   const { data, loading, error } = useQuery<PersonsData>(PERSONS_QUERY, {
     variables: {
       page: 1,
       take: 100,
-      ...(filters.search && { search: filters.search }),
-      ...(filters.sort && {
-        orderBy: {
-          field: filters.sort.split('_')[0],
-          direction: filters.sort.split('_')[1].toUpperCase()
-        }
-      })
-    }
+    },
   });
 
   if (loading) return <LoadingSkeleton />;
-  if (error) return <div>Une erreur est survenue lors du chargement des données.</div>;
+  if (error)
+    return <div>Une erreur est survenue lors du chargement des données.</div>;
   if (!data?.persons.items.length) return <div>Aucun propriétaire trouvé.</div>;
 
-  // Filter persons based on animalCount and animalType
-  const filteredPersons = data.persons.items.filter(person => {
+  const filteredPersons = data.persons.items.filter((person) => {
     let matches = true;
+
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      matches =
+        matches &&
+        (person.firstName.toLowerCase().includes(searchTerm) ||
+          person.lastName.toLowerCase().includes(searchTerm) ||
+          person.email.toLowerCase().includes(searchTerm));
+    }
 
     if (filters.animalCount) {
       const count = person.animals.length;
@@ -64,13 +77,31 @@ export default function PersonList({ filters }: PersonListProps) {
     }
 
     if (filters.animalType) {
-      matches = matches && person.animals.some(
-        animal => animal.species.toLowerCase() === filters.animalType?.toLowerCase()
-      );
+      matches =
+        matches &&
+        person.animals.some(
+          (animal) =>
+            animal.species.toLowerCase() === filters.animalType?.toLowerCase()
+        );
     }
 
     return matches;
   });
+
+  if (filters.sort) {
+    const [field, direction] = filters.sort.split("_");
+    filteredPersons.sort((a, b) => {
+      let comparison = 0;
+      if (field === "name") {
+        comparison = `${a.firstName} ${a.lastName}`.localeCompare(
+          `${b.firstName} ${b.lastName}`
+        );
+      } else if (field === "animals") {
+        comparison = a.animals.length - b.animals.length;
+      }
+      return direction === "asc" ? comparison : -comparison;
+    });
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -81,8 +112,8 @@ export default function PersonList({ filters }: PersonListProps) {
         >
           <CardContent className="p-6">
             <div className="flex items-center mb-4">
-              <div className="w-16 h-16 bg-gray-200 rounded-full mr-4 flex items-center justify-center">
-                <span className="text-2xl font-bold text-gray-500">
+              <div className="w-16 h-16 bg-blue-100 rounded-full mr-4 flex items-center justify-center">
+                <span className="text-2xl font-bold text-blue-600">
                   {person.firstName.charAt(0)}
                 </span>
               </div>
@@ -100,14 +131,34 @@ export default function PersonList({ filters }: PersonListProps) {
                 <h4 className="font-semibold mb-2">Animaux:</h4>
                 <div className="flex flex-wrap gap-2">
                   {person.animals.map((animal) => (
-                    <div
-                      key={animal.id}
-                      className="bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center"
-                      title={`${animal.name} (${animal.species})`}
-                    >
-                      <span className="text-xs font-medium">
-                        {animal.name.charAt(0)}
-                      </span>
+                    <div key={animal.id} className="relative group">
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center"
+                        style={{
+                          backgroundColor: animal.color
+                            ? `#${animal.color}20`
+                            : "#f3f4f6",
+                          color: animal.color ? `#${animal.color}` : "#6b7280",
+                        }}
+                      >
+                        <span className="text-xs font-medium">
+                          {animal.name.charAt(0)}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                        <p>{animal.name}</p>
+                        <p>
+                          {speciesTranslations[animal.species] ||
+                            animal.species}
+                        </p>
+                        <p>
+                          {gramsToKg(animal.weight).toLocaleString("fr-FR", {
+                            minimumFractionDigits: 1,
+                            maximumFractionDigits: 1,
+                          })}{" "}
+                          kg
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -130,4 +181,6 @@ export default function PersonList({ filters }: PersonListProps) {
       ))}
     </div>
   );
-}
+};
+
+export default PersonList;
