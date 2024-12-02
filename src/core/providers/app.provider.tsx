@@ -1,10 +1,12 @@
+"use client";
+
 import { PropsWithChildren } from "react";
-import { ApolloClientProvider } from "../../infrastructure/graphql/apollo-provider";
+import { ApolloProvider } from "./apollo-provider";
 
 export function AppProvider({ children }: PropsWithChildren) {
   return (
-    <ApolloClientProvider>
+    <ApolloProvider>
       {children}
-    </ApolloClientProvider>
+    </ApolloProvider>
   );
 }
