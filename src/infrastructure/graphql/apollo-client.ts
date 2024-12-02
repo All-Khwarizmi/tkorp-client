@@ -1,5 +1,8 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
-import { PaginatedAnimalResponse, PaginatedPersonResponse } from '@/core/entities/types';
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import {
+  PaginatedAnimalResponse,
+  PaginatedPersonResponse,
+} from "../../core/entities/types";
 
 const httpLink = createHttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
@@ -12,10 +15,14 @@ export const apolloClient = new ApolloClient({
       Query: {
         fields: {
           animals: {
-            keyArgs: ['orderBy'],
+            keyArgs: ["orderBy"],
             merge(
-              existing: PaginatedAnimalResponse = { items: [], total: 0, hasMore: false },
-              incoming: PaginatedAnimalResponse,
+              existing: PaginatedAnimalResponse = {
+                items: [],
+                total: 0,
+                hasMore: false,
+              },
+              incoming: PaginatedAnimalResponse
             ) {
               return {
                 ...incoming,
@@ -26,8 +33,12 @@ export const apolloClient = new ApolloClient({
           persons: {
             keyArgs: [],
             merge(
-              existing: PaginatedPersonResponse = { items: [], total: 0, hasMore: false },
-              incoming: PaginatedPersonResponse,
+              existing: PaginatedPersonResponse = {
+                items: [],
+                total: 0,
+                hasMore: false,
+              },
+              incoming: PaginatedPersonResponse
             ) {
               return {
                 ...incoming,
