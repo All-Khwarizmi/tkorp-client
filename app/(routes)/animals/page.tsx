@@ -1,5 +1,5 @@
 'use client';
-
+//app/(routes)/animals/page.tsx
 import { Suspense, useState } from 'react';
 import AnimalFilters from '@/components/animal-filters';
 import { Skeleton } from '@/components/ui/skeleton';
