@@ -63,7 +63,7 @@ pnpm install
 
 ```env
 // NEXT_PUBLIC_GRAPHQL_URL=https://tkorp-production.up.railway.app/graphql
-// Local
+// Local (attention à cloner, installer et lancer le serveur de développement)
  NEXT_PUBLIC_GRAPHQL_URL=http://localhost:5001/graphql
 ```
 
