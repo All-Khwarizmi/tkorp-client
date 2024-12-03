@@ -62,10 +62,12 @@ pnpm install
 3. Configurer les variables d'environnement :
 
 ```env
-NEXT_PUBLIC_GRAPHQL_URL=https://tkorp-production.up.railway.app/graphql
+// NEXT_PUBLIC_GRAPHQL_URL=https://tkorp-production.up.railway.app/graphql
+// Local
+ NEXT_PUBLIC_GRAPHQL_URL=http://localhost:5001/graphql
 ```
 
-4. Lancer le serveur de développement :
+1. Lancer le serveur de développement :
 
 ```bash
 pnpm dev
